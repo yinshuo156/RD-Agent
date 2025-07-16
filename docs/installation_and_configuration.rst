@@ -107,6 +107,53 @@ Besides, when you are using reasoning models, the response might include the tho
 
 For more details on LiteLLM requirements, refer to the `official LiteLLM documentation <https://docs.litellm.ai/docs>`_.
 
+你可以这样优化衔接，使得它自然地接在原句后面，同时明确指出是基于 LiteLLM 官方文档的 Azure 配置示例：
+
+---
+
+For more details on LiteLLM requirements, refer to the `official LiteLLM documentation <https://docs.litellm.ai/docs>`\_.
+
+Here’s a sample configuration specifically for **Azure OpenAI**, based on the `official LiteLLM documentation <https://docs.litellm.ai/docs>`\_:
+
+**Configuration Example: Azure OpenAI Setup (Based on LiteLLM Docs)**
+
+If you're using Azure OpenAI, below is a working example using the Python SDK, as provided in the `official LiteLLM documentation <https://docs.litellm.ai/docs/providers/azure/>`\_:
+
+```python
+from litellm import completion
+import os
+
+# Set Azure OpenAI environment variables
+os.environ["AZURE_API_KEY"] = "<your_azure_api_key>"
+os.environ["AZURE_API_BASE"] = "<your_azure_api_base>"
+os.environ["AZURE_API_VERSION"] = "<version>"
+
+# Make a request to your Azure deployment
+response = completion(
+  "azure/<your_deployment_name>",
+  messages = [{ "content": "Hello, how are you?", "role": "user" }]
+)
+```
+
+To align with the Python SDK example above, you can configure the `CHAT_MODEL` based on the `response` model setting and use the corresponding `os.environ` variables by writing them into your local `.env` file as follows:
+
+```bash
+cat << EOF > .env
+# CHAT MODEL: Azure OpenAI via LiteLLM
+CHAT_MODEL=azure/<your_deployment_name>
+AZURE_API_BASE=https://<your_azure_base>.openai.azure.com/
+AZURE_API_KEY=<your_azure_api_key>
+AZURE_API_VERSION=<version>
+
+# EMBEDDING MODEL: Using SiliconFlow via litellm_proxy
+EMBEDDING_MODEL=litellm_proxy/BAAI/bge-large-en-v1.5
+LITELLM_PROXY_API_KEY=<your_siliconflow_api_key>
+LITELLM_PROXY_API_BASE=https://api.siliconflow.cn/v1
+EOF
+```
+
+
+
 
 Configuration(deprecated)
 =========================
